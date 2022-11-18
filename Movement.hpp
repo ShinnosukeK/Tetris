@@ -1,16 +1,9 @@
 #pragma once
+#define FALL_TIME 1.0f//自由落下の時間間隔
 #include "Mino.hpp"
 #include "Field.hpp"
+#include "Timer.hpp"
 
-
-/// <summary>
-/// 動く方向
-/// </summary>
-enum class Dir {
-	Left,
-	Down,
-	Right,
-};
 
 
 /// <summary>
@@ -28,3 +21,8 @@ void MoveMino(Mino* p, Dir d);
 /// ミノの場所が前から変わったかどうかのチェック
 /// </summary>
 bool IsMinoPosChanged(Mino* mino, Mino* tmpMino);
+
+/// <summary>
+/// ミノを重力落下させる
+/// </summary>
+void Gravitate(Mino* mino, Timer* timer);

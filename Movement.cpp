@@ -81,3 +81,13 @@ bool IsMinoPosChanged(Mino* mino, Mino* tmpMino) {
 	}
 	return false;
 }
+
+void Gravitate(Mino* mino, Timer* timer) {
+	mino->fallCountTime += timer->GetDeltaTime();
+	if (mino->fallCountTime > FALL_TIME) {
+		mino->fallCountTime = 0.0f;
+		if (CanMove(mino, Dir::Down)) {
+			MoveMino(mino, Dir::Down);
+		}		
+	}
+}
