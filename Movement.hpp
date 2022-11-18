@@ -4,7 +4,14 @@
 #include "Field.hpp"
 #include "Timer.hpp"
 
-
+/// <summary>
+/// 動く方向
+/// </summary>
+enum class Dir {
+	Left,
+	Down,
+	Right,
+};
 
 /// <summary>
 /// ミノが動かせるかどうかのチェック

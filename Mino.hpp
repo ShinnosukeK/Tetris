@@ -1,5 +1,6 @@
 #pragma once
 
+
 enum class BlockType {
 	None,
 	Z,
@@ -24,6 +25,9 @@ class Mino {
 public:
 	//ミノの種類
 	BlockType minoType;
+
+	//ミノが重力落下するためのカウント用変数
+	float fallCountTime;
 
 	//ミノの形（7種類，4状態)：絵としての見た目は正しいが，行列としては転置している
 	int reversedShape[7][4][4][4] = {
@@ -271,4 +275,5 @@ public:
 
 	//コンストラクタ
 	explicit Mino();
+
 };
