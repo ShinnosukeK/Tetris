@@ -22,5 +22,6 @@ public:
 	void CountFPS();
 
 	int GetFPS();
+	float GetDeltaTime();
 };
 

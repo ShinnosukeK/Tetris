@@ -38,3 +38,7 @@ void Timer::CountFPS() {
 int Timer::GetFPS() {
 	return this->fps;
 }
+
+float Timer::GetDeltaTime() {
+	return this->deltaTime;
+}
