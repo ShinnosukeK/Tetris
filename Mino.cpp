@@ -49,42 +49,6 @@ void Mino::UpdateWorldBlockPosition() {
 	}	
 }
 
-Pos Mino::GetMinXBlockPosition() {
-
-	int number = 0;//暫定最小
-
-	//最小を求めるアルゴリズム
-	for (int i = 0; i < 4; i++) {
-		number = this->worldPos[i].x < this->worldPos[number].x ? i : number;
-	};
-
-	return this->worldPos[number];
-}
-
-Pos Mino::GetMaxXBlockPosition() {
-
-	int number = 0;//暫定最大
-
-	//最大を求めるアルゴリズム
-	for (int i = 0; i < 4; i++) {
-		number = this->worldPos[number].x < this->worldPos[i].x ? i : number;
-	};
-
-	return this->worldPos[number];
-}
-
-Pos Mino::GetMaxYBlockPosition() {
-
-	int number = 0;//暫定最大
-
-	//最大を求めるアルゴリズム
-	for (int i = 0; i < 4; i++) {
-		number = this->worldPos[number].y < this->worldPos[i].y ? i : number;
-	};
-
-	return this->worldPos[number];
-}
-
 //コンストラクタ
 Mino::Mino() {
 
