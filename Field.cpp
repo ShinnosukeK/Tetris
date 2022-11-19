@@ -29,17 +29,17 @@ void InitField() {
 }
 
 
-void UpdateField(Mino mino, Mino tmpMino) {
+void UpdateField(Mino* mino, Mino* tmpMino) {
 	for (int i = 0; i < 4; i++) {
 
 		//‘O‚Ìƒ~ƒm‚ÌˆÊ’u‚ª•Ï‰»‚µ‚Ä‚¢‚½ê‡
-		if (IsMinoPosChanged(&mino, &tmpMino)) {
+		if (IsMinoPosChanged(mino, tmpMino)) {
 			//Œ³‚Ìƒ~ƒm‚ª‚¢‚½êŠ‚Í”wŒi‚É‚·‚é
-			field[tmpMino.worldPos[i].x][tmpMino.worldPos[i].y] = int(BlockType::Background);
+			field[tmpMino->worldPos[i].x][tmpMino->worldPos[i].y] = int(BlockType::Background);
 		}
 
 		//ÅV‚Ìƒ~ƒm‚ÌˆÊ’u‚ðXV‚·‚é
-		field[mino.worldPos[i].x][mino.worldPos[i].y] = int(mino.minoType);
+		field[mino->worldPos[i].x][mino->worldPos[i].y] = int(mino->minoType);
 	}
 };
 
