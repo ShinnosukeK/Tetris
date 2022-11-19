@@ -23,7 +23,7 @@ void InitField();
 /// </summary>
 /// <param name="mino"></param>
 /// <param name="tmpMino"></param>
-void UpdateField(Mino mino, Mino tmpMino);
+void UpdateField(Mino* mino, Mino* tmpMino);
 
 /// <summary>
 /// フィールド描画
