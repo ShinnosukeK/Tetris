@@ -32,30 +32,46 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 
 		Mino tmpMino = mino;//一時的に保存しておく用のミノ
 
-		
 		//入力
+		//if文に入ると8引いてるのは，
+		//初回入力は1フレーム目でミノが動くが，
+		//以降は8フレーム押し続けないと動かないようにするため
 		if (keyInputFrames[KEY_INPUT_A] >= 1) {
+			//keyInputFrames[KEY_INPUT_A] -= 8;
 			if (CanMove(&mino, Dir::Left)) {
+				//左に動かし，フィールド更新
 				MoveMino(&mino, Dir::Left);
-			}			
-		}
-		if (keyInputFrames[KEY_INPUT_S] >= 1) {
-			if (CanMove(&mino, Dir::Down)) {
-				MoveMino(&mino, Dir::Down);
-				mino.fallCountTime = 0.0f;//下方向に動かした場合は自由落下の時間をリセット
-			}
+				UpdateFieldOnMove(&mino, &tmpMino);
+			}						
 		}
 		if (keyInputFrames[KEY_INPUT_D] >= 1) {
+			//keyInputFrames[KEY_INPUT_D] -= 8;
 			if (CanMove(&mino, Dir::Right)) {
+				//右に動かし，フィールド更新
 				MoveMino(&mino, Dir::Right);
+				UpdateFieldOnMove(&mino, &tmpMino);
+			}
+		}
+		if (keyInputFrames[KEY_INPUT_S] >= 1) {
+			keyInputFrames[KEY_INPUT_S] -= 8;
+			if (CanMove(&mino, Dir::Down)) {
+				//下に動かし，フィールド更新
+				MoveMino(&mino, Dir::Down);	
+				UpdateFieldOnMove(&mino, &tmpMino);
+
+				//下方向に動かした場合は自由落下の時間をリセット
+				mino.fallCountTime = 0.0f;
+			}
+			else {
+				//下方向に動かそうとしても動けないということは接地する
+				GroundMino(&mino);				
 			}
 		}
 
 		//ミノの自由落下を行う（入力の後にあることで，下方向の入力があった直後は自由落下しないようになる）
-		Gravitate(&mino, &timer);
-		
-		//更新
-		UpdateField(mino,tmpMino);
+		//Gravitate(&mino, &tmpMino, &timer);
+
+		//描画
 		DrawField(handle);
 	}
 

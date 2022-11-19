@@ -30,6 +30,11 @@ void MoveMino(Mino* p, Dir d);
 bool IsMinoPosChanged(Mino* mino, Mino* tmpMino);
 
 /// <summary>
-/// ミノを重力落下させる
+/// ミノを重力落下させる（フィールドの更新も同時にやってくれる）
 /// </summary>
-void Gravitate(Mino* mino, Timer* timer);
+void Gravitate(Mino* mino, Mino* tmpMino, Timer* timer);
+
+/// <summary>
+/// ミノを接地する
+/// </summary>
+void GroundMino(Mino* mino);

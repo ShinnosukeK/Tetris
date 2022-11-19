@@ -19,11 +19,18 @@ extern double extRate;//ミノの拡大率
 void InitField();
 
 /// <summary>
-/// ミノの位置からfieldの値を更新
+/// ミノの位置からフィールド更新
 /// </summary>
 /// <param name="mino"></param>
 /// <param name="tmpMino"></param>
-void UpdateField(Mino* mino, Mino* tmpMino);
+void UpdateField(Mino* mino, BlockType type);
+
+/// <summary>
+/// 移動に際してのフィールド更新を行う
+/// </summary>
+/// <param name="mino"></param>
+/// <param name="tmpMino"></param>
+void UpdateFieldOnMove(Mino* mino, Mino* tmpMino);
 
 /// <summary>
 /// フィールド描画

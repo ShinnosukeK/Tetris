@@ -29,19 +29,22 @@ void InitField() {
 }
 
 
-void UpdateField(Mino* mino, Mino* tmpMino) {
+void UpdateField(Mino* mino, BlockType type) {
 	for (int i = 0; i < 4; i++) {
-
-		//前のミノの位置が変化していた場合
-		if (IsMinoPosChanged(mino, tmpMino)) {
-			//元のミノがいた場所は背景にする
-			field[tmpMino->worldPos[i].x][tmpMino->worldPos[i].y] = int(BlockType::Background);
-		}
-
-		//最新のミノの位置を更新する
-		field[mino->worldPos[i].x][mino->worldPos[i].y] = int(mino->minoType);
+		//受け取ったミノのワールド座標の位置のフィールドを，受け取った色にする
+		field[mino->worldPos[i].x][mino->worldPos[i].y] = int(type);
 	}
 };
+
+void UpdateFieldOnMove(Mino* mino, Mino* tmpMino) {
+
+	//先に移動前のミノに当たるフィールドを背景に更新
+	UpdateField(tmpMino, BlockType::Background);
+
+	//後に移動後のミノに当たるフィールドをそのミノの色に更新。
+	//これは逆にするとミノ部分が背景に塗られるので注意。
+	UpdateField(mino, mino->minoType);
+}
 
 
 void DrawField(int* handle) {
@@ -51,7 +54,7 @@ void DrawField(int* handle) {
 			DrawRotaGraph(
 				LEFT_CORNER_POS + MINO_SIZE * i,
 				UP_CORNER_POS + MINO_SIZE * j,
-				extRate, 0.0f, handle[int(field[i][j]) - 1], TRUE);
+				extRate, 0.0f, handle[field[i][j] - 1], TRUE);
 		}
 	}
 }

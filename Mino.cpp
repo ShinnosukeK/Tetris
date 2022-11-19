@@ -3,6 +3,19 @@
 
 void Mino::InitMino() {
 
+	//メンバの初期化
+	this->rotState = 0;
+	this->fallCountTime = 0.0f;	
+	this->centerPos = {
+		4,3,
+	};
+	for (int i = 0; i < 4; i++) {
+		this->worldPos[i] = {0,0};
+	}
+	for (int i = 0; i < 4; i++) {
+		this->localPos[i] = { 0,0 };
+	}
+
 	//ミノの種類（7種類）を決定
 	int randomNumber = rand() % 7 + 1;//乱数を1~7から選ぶ
 	this->minoType = BlockType(randomNumber);//乱数に基づいてミノの種類（BlockType）を決定
