@@ -7,39 +7,29 @@ bool CanMove(Mino* p, Dir d) {
 
 	//複製したミノを仮想的に動かしてみる
 	MoveMino(&futureMino, d);
-	
-	//仮想的に動かしたミノを構成する4ブロックのうち，最小のx座標をもつブロックのワールド座標を取得
-	Pos minXPos = futureMino.GetMinXBlockPosition();
 
-	//仮想的に動かしたミノを構成する4ブロックのうち，最大のx座標をもつブロックのワールド座標を取得
-	Pos maxXPos = futureMino.GetMaxXBlockPosition();
-
-	//仮想的に動かしたミノを構成する4ブロックのうち，最大のy座標をもつブロックのワールド座標を取得
-	Pos maxYPos = futureMino.GetMaxYBlockPosition();
-
-	//基本は動かせるとしてフラグを立てておく
+	//基本は動かせるとしてフラグを設定
 	bool flag = true;
+	
+	for (int i = 0; i < 4; i++) {
 
-	//移動できるか
-	switch (d) {
-	case Dir::Left:
-		//「最小のx座標を持つブロック」の位置が背景以外のものだと，「左には」動かせないことになる
-		if (field[minXPos.x][minXPos.y] != (int)BlockType::Background) {
-			flag = false;			
-		}
-		break;
-	case Dir::Down:
-		//「最大のy座標を持つブロック」の位置が背景以外のものだと，「下には」動かせないことになる
-		if (field[maxYPos.x][maxYPos.y] != (int)BlockType::Background) {
+		int x = futureMino.worldPos[i].x;//仮想的に移動したミノの1ブロックのワールドx座標
+		int y = futureMino.worldPos[i].y;//仮想的に移動したミノの1ブロックのワールドy座標
+
+		//移動後のミノのワールド座標(x,y)が，1つでも壁や接地ミノになれば動かせない(false)
+		if (
+			field[x][y] == int(BlockType::Wall) ||
+			field[x][y] == int(BlockType::Grounded_Z) ||
+			field[x][y] == int(BlockType::Grounded_L) ||
+			field[x][y] == int(BlockType::Grounded_O) ||
+			field[x][y] == int(BlockType::Grounded_S) ||
+			field[x][y] == int(BlockType::Grounded_I) ||
+			field[x][y] == int(BlockType::Grounded_J) ||
+			field[x][y] == int(BlockType::Grounded_T)
+			) 
+		{
 			flag = false;
 		}
-		break;
-	case Dir::Right:
-		//「最大のx座標を持つブロック」の位置が背景以外のものだと，「右には」動かせないことになる
-		if (field[maxXPos.x][maxXPos.y] != (int)BlockType::Background) {
-			flag = false;			
-		}
-		break;
 	}
 	
 	return flag;
@@ -48,27 +38,39 @@ bool CanMove(Mino* p, Dir d) {
 
 void MoveMino(Mino* p, Dir d) {
 
-	//Dirの方向に応じて，1ミノを構成する4ブロックのワールド座標をすべて変化させる
+	//Dirの方向に応じて，1ミノを構成する4ブロックのワールド座標と，1ミノの中心座標を変化させる
 	switch (d) {
 	case Dir::Left:
 		for (int i = 0; i < 4; i++) {
 			//入力が左なら，x座標を減少
 			p->worldPos[i].x -= 1;
 		}
+
+		//ミノの中心もずらす
+		p->centerPos.x -= 1;
+
 		break;
 
 	case Dir::Down:
 		for (int i = 0; i < 4; i++) {
 			//入力が下なら，y座標を増加
-			p->worldPos[i].y += 1;
+			p->worldPos[i].y += 1;			
 		}
+
+		//ミノの中心もずらす
+		p->centerPos.y += 1;
+
 		break;
 
 	case Dir::Right:
 		for (int i = 0; i < 4; i++) {
 			//入力が右なら，x座標を増加
-			p->worldPos[i].x += 1;
+			p->worldPos[i].x += 1;		
 		}
+
+		//ミノの中心もずらす
+		p->centerPos.x += 1;
+
 		break;
 	}
 };

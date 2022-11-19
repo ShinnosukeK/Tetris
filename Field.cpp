@@ -23,9 +23,8 @@ void InitField() {
 			//Å‰ºs‚È‚ç•Ç‚È‚Ì‚Åã‘‚«
 			if (i == Y_SIZE - 1) {
 				field[j][i] = int(BlockType::Wall);
-			}			
+			}
 		}
-
 	}
 }
 
