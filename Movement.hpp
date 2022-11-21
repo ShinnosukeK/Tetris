@@ -2,7 +2,7 @@
 #define FALL_TIME 1.0f//自由落下の時間間隔
 #include "Mino.hpp"
 #include "Field.hpp"
-#include "Timer.hpp"
+#include "Time.hpp"
 
 /// <summary>
 /// 動く方向
@@ -32,9 +32,9 @@ bool IsMinoPosChanged(Mino* mino, Mino* tmpMino);
 /// <summary>
 /// ミノを重力落下させる（フィールドの更新も同時にやってくれる）
 /// </summary>
-void Gravitate(Mino* mino, Mino* tmpMino, Timer* timer);
+void Gravitate(Mino* mino, Mino* tmpMino, bool* isAnim);
 
 /// <summary>
 /// ミノを接地する
 /// </summary>
-void GroundMino(Mino* mino);
+void GroundMino(Mino* mino, bool* isAnim);

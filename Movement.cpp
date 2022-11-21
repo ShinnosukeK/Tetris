@@ -84,25 +84,24 @@ bool IsMinoPosChanged(Mino* mino, Mino* tmpMino) {
 	return false;
 }
 
-void Gravitate(Mino* mino,Mino* tmpMino, Timer* timer){
-	mino->fallCountTime += timer->GetDeltaTime();
+void Gravitate(Mino* mino,Mino* tmpMino, bool* isAnim){
+	mino->fallCountTime += Time::DeltaTime();
 	if (mino->fallCountTime > FALL_TIME) {
 		mino->fallCountTime = 0.0f;
 
 		//動けるなら自由落下させて，フィールド更新
 		if (CanMove(mino, Dir::Down)) {
 			MoveMino(mino, Dir::Down);
-			UpdateField(tmpMino, BlockType::Background);
-			UpdateField(mino, mino->minoType);			
+			UpdateFieldOnMove(mino, tmpMino);
 		}
 		//動けないということは接地する
 		else {
-			GroundMino(mino);
+			GroundMino(mino, isAnim);
 		}
 	}
 }
 
-void GroundMino(Mino* mino) {
+void GroundMino(Mino* mino, bool* isAnim) {
 
 	//ミノの色。11を足す理由：例えばZミノはBlockTypeで1に対応するが，
 	//「接地されたZミノ」は12に対応するようにして区別したいから
@@ -114,6 +113,9 @@ void GroundMino(Mino* mino) {
 	//接地用のミノの番号でフィールドを更新
 	UpdateField(mino, minoType);
 
-	//接地したミノは初期化
-	mino->InitMino();	
+	//消せない場合は即座にミノを初期化
+	DeleteLine(isAnim);
+
+	//ミノの初期化
+	mino->InitMino();
 }

@@ -9,6 +9,7 @@
 #define MINO_SIZE 18//ブロック1辺の長さ
 #define MINO_SIZE_ORIG 12//ブロック1辺の元の長さ
 extern int field[X_SIZE][Y_SIZE];//フィールド
+extern int tmpField[X_SIZE][Y_SIZE];//仮置き用のフィールド
 extern double extRate;//ミノの拡大率
 
 /// <summary>
@@ -33,7 +34,23 @@ void UpdateField(Mino* mino, BlockType type);
 void UpdateFieldOnMove(Mino* mino, Mino* tmpMino);
 
 /// <summary>
+/// 消去するフラグからフィールド更新
+/// </summary>
+/// <param name="deleteFlag"></param>
+void UpdateFieldOnDelete(bool* deleteFlag);
+
+/// <summary>
 /// フィールド描画
 /// </summary>
 /// <param name="handle"></param>
 void DrawField(int* handle);
+
+/// <summary>
+/// ラインを消す
+/// </summary>
+void DeleteLine(bool* isAnim);
+
+/// <summary>
+/// ラインを消すアニメ
+/// </summary>
+void StartDeleteAnim(bool* deleteFlag);

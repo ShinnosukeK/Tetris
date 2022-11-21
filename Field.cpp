@@ -1,6 +1,7 @@
 #include "Field.hpp"
 
 int field[X_SIZE][Y_SIZE];//フィールド
+int tmpField[X_SIZE][Y_SIZE];//仮置き用のフィールド
 double extRate = double(MINO_SIZE) / MINO_SIZE_ORIG;//ミノの拡大率
 
 void InitField() {
@@ -46,6 +47,56 @@ void UpdateFieldOnMove(Mino* mino, Mino* tmpMino) {
 	UpdateField(mino, mino->minoType);
 }
 
+void UpdateFieldOnDelete(bool* deleteFlag) {
+
+	//フラグが立っている行だけすべて背景にする
+	for (int _y = 0; _y <= 18; _y++) {
+		if (deleteFlag[_y] == true) {
+			//y=1~19が盤面
+			int y = _y + 1;
+
+			//x=1~10が盤面
+			for (int x = 1; x <= 10; x++) {
+				field[x][y] = int(BlockType::Background);
+			}
+		}
+	}
+
+	//アニメーションとして機能させるため，fieldを一旦は直接いじらず，tmpFieldに保存しておく
+	for (int i = 0; i < X_SIZE; i++) {
+		for (int j = 0; j < Y_SIZE; j++) {
+			tmpField[i][j] = field[i][j];
+		}
+	}
+
+	//消えた分，全体を下にシフトさせる
+	for (int y = 18; y >= 1; y--) {
+
+		int count = 0;
+
+		//y行目よりも下の行で何行消えたかをカウント
+		for (int _y = y; _y <= 18 ; _y++) {
+			if (deleteFlag[_y]) {
+				count++;
+			}			
+		}
+
+		//カウントが存在すればシフトさせる
+		if (count != 0) {
+			for (int x = 1; x <= 10; x++) {
+
+				//y行目はcount分だけ下にずらす
+				tmpField[x][y + count] = tmpField[x][y];
+
+				//移動してしまったy行目は一旦背景にする
+				tmpField[x][y] = int(BlockType::Background);
+			}
+		}
+	}
+	
+	
+}
+
 
 void DrawField(int* handle) {
 	for (int j = 0; j < Y_SIZE; j++) {
@@ -57,4 +108,44 @@ void DrawField(int* handle) {
 				extRate, 0.0f, handle[field[i][j] - 1], TRUE);
 		}
 	}
+}
+
+void DeleteLine(bool* isAnim) {
+	//消すライン保存用（全部で19行ある）。基本的にはすべて消去できるとしている。
+	bool deleteFlag[19] = {
+		1,1,1,1,1,
+		1,1,1,1,1,
+		1,1,1,1,1,
+		1,1,1,1,
+	};
+
+	int y = 0;
+
+	//消せるライン判定
+	//deleteFlagは_y=0~18を見る
+	for (int _y = 0; _y <= 18; _y++) {
+
+		//消す対象はy=1~19の行
+		y = _y + 1;
+
+		//消す対象はx=1~10の列
+		for (int x = 1; x <= 10; x++) {			
+			//一行調べていく中で一回でも背景がある場合は消去できないことになる
+			if (field[x][y] == int(BlockType::Background))
+			{
+				deleteFlag[_y] = false;
+			}			
+		}
+
+		//1行でも消すラインがあれば，アニメーションを再生するフラグが立つ
+		*isAnim = *isAnim || deleteFlag[_y];
+	}
+
+	//アニメを開始するフラグが立っていれば消去アニメの開始
+	StartDeleteAnim(deleteFlag);
+}
+
+void StartDeleteAnim(bool* deleteFlag) {
+	//該当行のフィールドを背景に更新
+	UpdateFieldOnDelete(deleteFlag);
 }
