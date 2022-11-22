@@ -1,9 +1,9 @@
 #include "Movement.hpp"
 
-bool CanMove(Mino* p, Dir d) {
+bool CanMove(Mino* mino, Dir d) {
 
 	//引数のミノを複製
-	Mino futureMino = *p;
+	Mino futureMino = *mino;
 
 	//複製したミノを仮想的に動かしてみる
 	MoveMino(&futureMino, d);

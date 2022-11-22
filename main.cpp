@@ -6,6 +6,7 @@
 #include "Field.hpp"
 #include "Time.hpp"
 #include "Picture.hpp"
+#include "PlayerInput.hpp"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 
@@ -24,74 +25,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 
 	while (ProcessMessage()==0 && ScreenFlip()==0 && ClearDrawScreen()==0 && UpdateKeyInputFrames()==0) {		
 
-		//FPS計測と出力
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", Time::FPS());
-		Time::CountFPS();
+		//FPS表示
+		Time::DisplayFPS();
 
-		Mino tmpMino = mino;//一時的に保存しておく用のミノ
-
-		//入力
-		//if文に入ると8引いてるのは，
-		//初回入力は1フレーム目でミノが動くが，
-		//以降は8フレーム押し続けないと動かないようにするため
-		if (keyInputFrames[KEY_INPUT_A] >= 1 && !isAnim ) {
-			keyInputFrames[KEY_INPUT_A] -= 8;
-			if (CanMove(&mino, Dir::Left)) {
-				//左に動かし，フィールド更新
-				MoveMino(&mino, Dir::Left);
-				UpdateFieldOnMove(&mino, &tmpMino);
-			}						
-		}
-		if (keyInputFrames[KEY_INPUT_D] >= 1 && !isAnim) {
-			keyInputFrames[KEY_INPUT_D] -= 8;
-			if (CanMove(&mino, Dir::Right)) {
-				//右に動かし，フィールド更新
-				MoveMino(&mino, Dir::Right);
-				UpdateFieldOnMove(&mino, &tmpMino);
-			}
-		}
-		if (keyInputFrames[KEY_INPUT_S] >= 1 && !isAnim) {
-			keyInputFrames[KEY_INPUT_S] -= 8;
-			if (CanMove(&mino, Dir::Down)) {
-				//下に動かし，フィールド更新
-				MoveMino(&mino, Dir::Down);	
-				UpdateFieldOnMove(&mino, &tmpMino);
-
-				//下方向に動かした場合は自由落下の時間をリセット
-				mino.fallCountTime = 0.0f;
-			}
-			else {
-				//下方向に動かそうとしても動けないということは接地する
-				GroundMino(&mino, &isAnim);
-			}
-		}
-
-		//反時計回りの回転
-		if (keyInputFrames[KEY_INPUT_J] >= 1 && !isAnim) {
-			keyInputFrames[KEY_INPUT_J] -= 100;//適当に引くことで，長押しして回転しないようにする
-			RotaMino(&mino, &tmpMino, RotaDir::CounterClockwise);
-		}
+		//一時的に保存しておくミノ
+		Mino tmpMino = mino;
 		
-
-		//時計回りの回転
-		if (keyInputFrames[KEY_INPUT_K] >= 1 && !isAnim) {
-			keyInputFrames[KEY_INPUT_K] -= 100;//適当に引くことで，長押しして回転しないようにする
-			RotaMino(&mino, &tmpMino, RotaDir::Clockwise);
-		}
+		//player入力処理
+		PlayerInput(&mino, &tmpMino, &isAnim);
 
 		//ミノの自由落下を行う（入力の後にあることで，下方向の入力があった直後は自由落下しないようになる）
-		Gravitate(&mino, &tmpMino,&isAnim);
+		Gravitate(&mino, &tmpMino, &isAnim);
 
-		//描画
-		DrawField(handle);		
-
-		//アニメーションのisAnimフラグを，一定時間経ったら倒す
+		//アニメーションフラグを，一定時間経ったら倒す
 		if (isAnim) {
+
+			//時間計測
 			animTimeSoFar += Time::DeltaTime();
 
+			//計測時間が指定時間を超えたら
 			if (animTimeSoFar >= animTime) {
+
+				//フラグ倒す
 				isAnim = false;
 
+				//アニメが終了したので，フィールドを更新する
 				for (int i = 0; i < X_SIZE; i++) {
 					for (int j = 0; j < Y_SIZE; j++) {
 						field[i][j] = tmpField[i][j];
@@ -103,6 +61,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 				mino.InitMino();//ミノの初期化
 			}
 		}
+
+		//描画
+		DrawField(handle);		
 	}
 
 	if(Finalize()!=0) return -1;
