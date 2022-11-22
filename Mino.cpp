@@ -38,7 +38,7 @@ void Mino::UpdateLocalBlockPosition() {
 
 			//ミノの状態を表す行列（shape[*][*][4][4]）の成分のうち，
 			//Noneではない場合は（＝ミノのブロックが何かしらある場合は）
-			if (this->shape[type][0][i][j] != int(BlockType::None)) {
+			if (this->shape[type][this->rotState][i][j] != int(BlockType::None)) {
 				
 				//ミノのブロックが記述されている部分をローカル座標として保存
 				this->localPos[k].x = i;
