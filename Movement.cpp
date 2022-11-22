@@ -119,3 +119,25 @@ void GroundMino(Mino* mino, bool* isAnim) {
 	//ミノの初期化
 	mino->InitMino();
 }
+
+void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d) {
+
+	//回転方向により，minoが持つ回転状態を変更
+	switch (d) {
+	case RotaDir::CounterClockwise:
+		mino->rotState = (mino->rotState + 1) % 4;
+		break;
+	case RotaDir::Clockwise:
+		mino->rotState = (mino->rotState + 3) % 4;//+3ではなくて-1としてしまうとバグる。多分負のmodが例外になるから。
+		break;
+	}	
+
+	//ミノのローカル座標を更新
+	mino->UpdateLocalBlockPosition();
+
+	//ミノのワールド座標を更新
+	mino->UpdateWorldBlockPosition();
+
+	//フィールドを更新
+	UpdateFieldOnMove(mino, tmpMino);
+}

@@ -14,6 +14,14 @@ enum class Dir {
 };
 
 /// <summary>
+/// 回転方向
+/// </summary>
+enum class RotaDir {
+	Clockwise,
+	CounterClockwise,
+};
+
+/// <summary>
 /// ミノが動かせるかどうかのチェック
 /// </summary>
 /// <returns></returns>
@@ -38,3 +46,8 @@ void Gravitate(Mino* mino, Mino* tmpMino, bool* isAnim);
 /// ミノを接地する
 /// </summary>
 void GroundMino(Mino* mino, bool* isAnim);
+
+/// <summary>
+/// ミノを回転する
+/// </summary>
+void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d);

@@ -66,6 +66,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 			}
 		}
 
+		//反時計回りの回転
+		if (keyInputFrames[KEY_INPUT_J] >= 1 && !isAnim) {
+			keyInputFrames[KEY_INPUT_J] -= 100;//適当に引くことで，長押しして回転しないようにする
+			RotaMino(&mino, &tmpMino, RotaDir::CounterClockwise);
+		}
+		
+
+		//時計回りの回転
+		if (keyInputFrames[KEY_INPUT_K] >= 1 && !isAnim) {
+			keyInputFrames[KEY_INPUT_K] -= 100;//適当に引くことで，長押しして回転しないようにする
+			RotaMino(&mino, &tmpMino, RotaDir::Clockwise);
+		}
+
 		//ミノの自由落下を行う（入力の後にあることで，下方向の入力があった直後は自由落下しないようになる）
 		Gravitate(&mino, &tmpMino,&isAnim);
 
