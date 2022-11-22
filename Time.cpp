@@ -36,6 +36,15 @@ void Time::CountFPS() {
 	}
 }
 
+void Time::DisplayFPS() {
+
+	//FPSèoóÕ
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", Time::FPS());
+
+	//FPSåvë™
+	Time::CountFPS();
+}
+
 int Time::FPS() {
 	return Time::fps;
 }

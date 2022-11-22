@@ -15,6 +15,11 @@ public:
 	/// </summary>
 	static void CountFPS();
 
+	/// <summary>
+	/// FPS‚Ì•\Ž¦
+	/// </summary>
+	static void DisplayFPS();
+
 	static int FPS();
 	static float DeltaTime();
 };
