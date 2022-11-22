@@ -7,7 +7,7 @@ void Mino::InitMino() {
 	this->rotState = 0;
 	this->fallCountTime = 0.0f;	
 	this->centerPos = {
-		4,3,
+		4,1,
 	};
 	for (int i = 0; i < 4; i++) {
 		this->worldPos[i] = {0,0};
