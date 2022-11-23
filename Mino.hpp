@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Field.hpp"
+#include "DxLib.h"
 
 enum class BlockType {
 	None,

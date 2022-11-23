@@ -1,5 +1,4 @@
 #include "Mino.hpp"
-#include "DxLib.h"
 
 void Mino::InitMino() {
 

@@ -22,15 +22,11 @@ void InitField();
 /// <summary>
 /// ミノの位置からフィールド更新
 /// </summary>
-/// <param name="mino"></param>
-/// <param name="tmpMino"></param>
 void UpdateField(Mino* mino, BlockType type);
 
 /// <summary>
 /// 移動に際してのフィールド更新を行う
 /// </summary>
-/// <param name="mino"></param>
-/// <param name="tmpMino"></param>
 void UpdateFieldOnMove(Mino* mino, Mino* tmpMino);
 
 /// <summary>
@@ -46,11 +42,11 @@ void UpdateFieldOnDelete(bool* deleteFlag);
 void DrawField(int* handle);
 
 /// <summary>
-/// ラインを消す
+/// ラインを消せるかどうかのフラグ
 /// </summary>
-void DeleteLine(bool* isAnim);
+bool CanDeleteLine();
 
 /// <summary>
-/// ラインを消すアニメ
+/// ラインを消す
 /// </summary>
-void StartDeleteAnim(bool* deleteFlag);
+void DeleteLine();

@@ -113,11 +113,25 @@ void GroundMino(Mino* mino, bool* isAnim) {
 	//接地用のミノの番号でフィールドを更新
 	UpdateField(mino, minoType);
 
-	//消せない場合は即座にミノを初期化
-	DeleteLine(isAnim);
-
-	//ミノの初期化
-	mino->InitMino();
+	//消すラインが存在するなら消去
+	if (CanDeleteLine()) {
+		DeleteLine();
+		*isAnim = true;//アニメ再生スタート
+	}
+	//消すラインが存在しないということは，ミノを初期化する
+	else {
+		mino->InitMino();
+		UpdateField(mino, mino->minoType);
+	}
+	
+	/*
+	//アニメが再生されていない（＝ラインが消えない）場合，ミノを初期化
+	//アニメが再生されている場合は，アニメ終了後にInitMino()するのでここではしない流れ	
+	if (!*isAnim) {
+		mino->InitMino();
+		UpdateField(mino, mino->minoType);
+	}
+	*/
 }
 
 void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d) {

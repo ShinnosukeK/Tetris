@@ -59,6 +59,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 				animTimeSoFar = 0.0f;
 
 				mino.InitMino();//ƒ~ƒm‚Ì‰Šú‰»
+				UpdateField(&mino, mino.minoType);
 			}
 		}
 

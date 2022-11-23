@@ -110,8 +110,12 @@ void DrawField(int* handle) {
 	}
 }
 
-void DeleteLine(bool* isAnim) {
-	//消すライン保存用（全部で19行ある）。基本的にはすべて消去できるとしている。
+bool CanDeleteLine() {
+
+	//消すラインが存在するかどうかのフラグ
+	bool canDelete = false;
+
+	//消すラインを保存するためのフラグ
 	bool deleteFlag[19] = {
 		1,1,1,1,1,
 		1,1,1,1,1,
@@ -129,23 +133,50 @@ void DeleteLine(bool* isAnim) {
 		y = _y + 1;
 
 		//消す対象はx=1~10の列
-		for (int x = 1; x <= 10; x++) {			
+		for (int x = 1; x <= 10; x++) {
 			//一行調べていく中で一回でも背景がある場合は消去できないことになる
 			if (field[x][y] == int(BlockType::Background))
 			{
 				deleteFlag[_y] = false;
-			}			
+			}
 		}
 
-		//1行でも消すラインがあれば，アニメーションを再生するフラグが立つ
-		*isAnim = *isAnim || deleteFlag[_y];
+		//1行でも消すラインがあれば，消せるフラグが立つ
+		canDelete = canDelete || deleteFlag[_y];
 	}
 
-	//アニメを開始するフラグが立っていれば消去アニメの開始
-	StartDeleteAnim(deleteFlag);
+	return canDelete;
 }
 
-void StartDeleteAnim(bool* deleteFlag) {
-	//該当行のフィールドを背景に更新
+void DeleteLine() {
+
+	//消すラインを保存するためのフラグ
+	bool deleteFlag[19] = {
+		1,1,1,1,1,
+		1,1,1,1,1,
+		1,1,1,1,1,
+		1,1,1,1,
+	};
+
+	int y = 0;
+
+	//消せるライン判定
+	//deleteFlagは_y=0~18を見る
+	for (int _y = 0; _y <= 18; _y++) {
+
+		//消す対象はy=1~19の行
+		y = _y + 1;
+
+		//消す対象はx=1~10の列
+		for (int x = 1; x <= 10; x++) {
+			//一行調べていく中で一回でも背景がある場合は消去できないことになる
+			if (field[x][y] == int(BlockType::Background))
+			{
+				deleteFlag[_y] = false;
+			}
+		}
+	}
+
+	//ラインを消すことによるフィールドの更新
 	UpdateFieldOnDelete(deleteFlag);
 }
