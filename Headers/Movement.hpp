@@ -45,7 +45,7 @@ void Gravitate(Mino* mino, Mino* tmpMino, bool* isAnim);
 /// <summary>
 /// ƒ~ƒm‚ğÚ’n‚·‚é
 /// </summary>
-void GroundMino(Mino* mino, bool* isAnim);
+void GroundMino(Mino* mino, bool* isDeleted);
 
 /// <summary>
 /// ƒ~ƒm‚ğ‰ñ“]‚·‚é

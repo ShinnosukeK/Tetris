@@ -84,54 +84,45 @@ bool IsMinoPosChanged(Mino* mino, Mino* tmpMino) {
 	return false;
 }
 
-void Gravitate(Mino* mino,Mino* tmpMino, bool* isAnim){
+void Gravitate(Mino* mino,Mino* tmpMino, bool* isGrounded){
+
+	//時間計測
 	mino->fallCountTime += Time::DeltaTime();
+
+	//一定時間経ったら
 	if (mino->fallCountTime > FALL_TIME) {
+
+		//時間計測リセット
 		mino->fallCountTime = 0.0f;
 
-		//動けるなら自由落下させて，フィールド更新
+		//動けるなら自由落下させる
 		if (CanMove(mino, Dir::Down)) {
-			MoveMino(mino, Dir::Down);
-			UpdateFieldOnMove(mino, tmpMino);
+			MoveMino(mino, Dir::Down);			
 		}
-		//動けないということは接地する
+		//動けないということは接地フラグを立てる
 		else {
-			GroundMino(mino, isAnim);
+			*isGrounded = true;
 		}
 	}
 }
 
-void GroundMino(Mino* mino, bool* isAnim) {
+void GroundMino(Mino* mino, bool* isDeleted) {
 
 	//ミノの色。11を足す理由：例えばZミノはBlockTypeで1に対応するが，
 	//「接地されたZミノ」は12に対応するようにして区別したいから
 	int number = int(mino->minoType) + 11;
 
 	//上で求めた整数をBlockType型に直す
-	BlockType minoType = BlockType(number);
+	BlockType t = BlockType(number);
 
-	//接地用のミノの番号でフィールドを更新
-	UpdateField(mino, minoType);
+	//ミノの状態を更新
+	mino->minoType = t;
 
-	//消すラインが存在するなら消去
+	//消すラインが存在するなら
 	if (CanDeleteLine()) {
-		DeleteLine();
-		*isAnim = true;//アニメ再生スタート
+		//ラインを消すフラグを立てる
+		*isDeleted = true;
 	}
-	//消すラインが存在しないということは，ミノを初期化する
-	else {
-		mino->InitMino();
-		UpdateField(mino, mino->minoType);
-	}
-	
-	/*
-	//アニメが再生されていない（＝ラインが消えない）場合，ミノを初期化
-	//アニメが再生されている場合は，アニメ終了後にInitMino()するのでここではしない流れ	
-	if (!*isAnim) {
-		mino->InitMino();
-		UpdateField(mino, mino->minoType);
-	}
-	*/
 }
 
 void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d) {
@@ -151,7 +142,4 @@ void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d) {
 
 	//ミノのワールド座標を更新
 	mino->UpdateWorldBlockPosition();
-
-	//フィールドを更新
-	UpdateFieldOnMove(mino, tmpMino);
 }
