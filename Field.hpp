@@ -1,7 +1,6 @@
 #pragma once
 #include "Mino.hpp"
 #include "DxLib.h"
-#include "Movement.hpp"
 #define X_SIZE 12//x方向のフィールドサイズ
 #define Y_SIZE 21//y方向のフィールドサイズ
 #define LEFT_CORNER_POS 50//描画の左端

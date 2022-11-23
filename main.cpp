@@ -1,4 +1,4 @@
-#include "../DxLib/DxLib.h"
+#include "DxLib.h"
 #include "System.hpp"
 #include "Input.hpp"
 #include "Mino.hpp"
