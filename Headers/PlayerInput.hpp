@@ -2,4 +2,4 @@
 #include "Mino.hpp"
 #include "Input.hpp"
 #include "Movement.hpp"
-void PlayerInput(Mino* mino, Mino* tmpMino, bool* isGrounded, const bool& isAnim);
+void PlayerInput(Mino* mino, bool* isGrounded, const bool& isAnim);

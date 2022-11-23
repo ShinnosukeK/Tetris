@@ -21,12 +21,12 @@ void InitField();
 /// <summary>
 /// ミノの位置からフィールド更新
 /// </summary>
-void UpdateField(Mino* mino, BlockType type);
+void UpdateField(const Mino& mino, BlockType type);
 
 /// <summary>
 /// 移動に際してのフィールド更新を行う
 /// </summary>
-void UpdateFieldOnMove(Mino* mino, Mino* tmpMino);
+void UpdateFieldOnMove(const Mino& mino, const Mino& tmpMino);
 
 /// <summary>
 /// 消去するフラグからフィールド更新

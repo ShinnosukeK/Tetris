@@ -25,7 +25,7 @@ enum class RotaDir {
 /// ミノが動かせるかどうかのチェック
 /// </summary>
 /// <returns></returns>
-bool CanMove(Mino* p, Dir d);
+bool CanMove(const Mino& p, Dir d);
 
 /// <summary>
 /// ミノを動かす
@@ -35,12 +35,12 @@ void MoveMino(Mino* p, Dir d);
 /// <summary>
 /// ミノの場所が前から変わったかどうかのチェック
 /// </summary>
-bool IsMinoPosChanged(Mino* mino, Mino* tmpMino);
+bool IsMinoPosChanged(const Mino& mino, const Mino& tmpMino);
 
 /// <summary>
 /// ミノを重力落下させる（フィールドの更新も同時にやってくれる）
 /// </summary>
-void Gravitate(Mino* mino, Mino* tmpMino, bool* isAnim);
+void Gravitate(Mino* mino, bool* isAnim);
 
 /// <summary>
 /// ミノを接地する
@@ -48,6 +48,11 @@ void Gravitate(Mino* mino, Mino* tmpMino, bool* isAnim);
 void GroundMino(Mino* mino, bool* isDeleted);
 
 /// <summary>
+/// ミノを回転できるかどうか
+/// </summary>
+bool CanRota(const Mino& mino, RotaDir d);
+
+/// <summary>
 /// ミノを回転する
 /// </summary>
-void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d);
+void RotaMino(Mino* mino, RotaDir d);

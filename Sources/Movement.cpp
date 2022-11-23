@@ -1,9 +1,9 @@
 #include "Movement.hpp"
 
-bool CanMove(Mino* mino, Dir d) {
+bool CanMove(const Mino& mino, Dir d) {
 
 	//引数のミノを複製
-	Mino futureMino = *mino;
+	Mino futureMino = mino;
 
 	//複製したミノを仮想的に動かしてみる
 	MoveMino(&futureMino, d);
@@ -75,16 +75,16 @@ void MoveMino(Mino* p, Dir d) {
 	}
 };
 
-bool IsMinoPosChanged(Mino* mino, Mino* tmpMino) {
+bool IsMinoPosChanged(const Mino& mino, const Mino& tmpMino) {
 	for (int i = 0; i < 4; i++) {
 		//方向キーによる移動は平行移動だから，対応する4ブロックのx,y座標を比較して1つでも違えば位置が変化(true）
-		if (mino->worldPos[i].x != tmpMino->worldPos[i].x)  return true;
-		if (mino->worldPos[i].y != tmpMino->worldPos[i].y)	return true;
+		if (mino.worldPos[i].x != tmpMino.worldPos[i].x)  return true;
+		if (mino.worldPos[i].y != tmpMino.worldPos[i].y)	return true;
 	}
 	return false;
 }
 
-void Gravitate(Mino* mino,Mino* tmpMino, bool* isGrounded){
+void Gravitate(Mino* mino, bool* isGrounded){
 
 	//時間計測
 	mino->fallCountTime += Time::DeltaTime();
@@ -96,7 +96,7 @@ void Gravitate(Mino* mino,Mino* tmpMino, bool* isGrounded){
 		mino->fallCountTime = 0.0f;
 
 		//動けるなら自由落下させる
-		if (CanMove(mino, Dir::Down)) {
+		if (CanMove(*mino, Dir::Down)) {
 			MoveMino(mino, Dir::Down);			
 		}
 		//動けないということは接地フラグを立てる
@@ -125,7 +125,41 @@ void GroundMino(Mino* mino, bool* isDeleted) {
 	}
 }
 
-void RotaMino(Mino* mino, Mino* tmpMino, RotaDir d) {
+bool CanRota(const Mino& mino, RotaDir d) {
+	//引数のミノを複製
+	Mino futureMino = mino;
+
+	//複製したミノを仮想的に回転してみる
+	RotaMino(&futureMino, d);
+
+	//基本は動かせるとしてフラグを設定
+	bool flag = true;
+
+	for (int i = 0; i < 4; i++) {
+
+		int x = futureMino.worldPos[i].x;//仮想的に移動したミノの1ブロックのワールドx座標
+		int y = futureMino.worldPos[i].y;//仮想的に移動したミノの1ブロックのワールドy座標
+
+		//移動後のミノのワールド座標(x,y)が，1つでも壁や接地ミノになれば動かせない(false)
+		if (
+			field[x][y] == int(BlockType::Wall) ||
+			field[x][y] == int(BlockType::Grounded_Z) ||
+			field[x][y] == int(BlockType::Grounded_L) ||
+			field[x][y] == int(BlockType::Grounded_O) ||
+			field[x][y] == int(BlockType::Grounded_S) ||
+			field[x][y] == int(BlockType::Grounded_I) ||
+			field[x][y] == int(BlockType::Grounded_J) ||
+			field[x][y] == int(BlockType::Grounded_T)
+			)
+		{
+			flag = false;
+		}
+	}
+
+	return flag;
+}
+
+void RotaMino(Mino* mino, RotaDir d) {
 
 	//回転方向により，minoが持つ回転状態を変更
 	switch (d) {

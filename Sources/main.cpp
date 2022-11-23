@@ -34,15 +34,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 		Mino tmpMino = mino;
 		
 		//player入力処理
-		PlayerInput(&mino, &tmpMino, &isGrounded, isAnim);
+		PlayerInput(&mino, &isGrounded, isAnim);
 
 		//ミノの自由落下を行う（入力の後にあることで，下方向の入力があった直後は自由落下しないようになる）
-		Gravitate(&mino, &tmpMino, &isGrounded);
+		Gravitate(&mino, &isGrounded);
 
 		//この時点でミノが動いていれば
-		if (IsMinoPosChanged(&mino, &tmpMino)) {
+		if (IsMinoPosChanged(mino, tmpMino)) {
 			//フィールド更新
-			UpdateFieldOnMove(&mino, &tmpMino);
+			UpdateFieldOnMove(mino, tmpMino);
 		}
 
 		//接地によるフィールド更新
@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 			isGrounded = false;
 
 			//フィールド更新
-			UpdateField(&mino, mino.minoType);
+			UpdateField(mino, mino.minoType);
 
 
 			//ラインを消すフラグが立っていれば
@@ -71,7 +71,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 			//ラインを消さないなら即ミノを初期化し，フィールド更新する
 			else {
 				mino.InitMino();
-				UpdateField(&mino, mino.minoType);
+				UpdateField(mino, mino.minoType);
 			}
 		}				
 
@@ -101,7 +101,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 				mino.InitMino();
 
 				//初期化したミノのためフィールド更新
-				UpdateField(&mino, mino.minoType);
+				UpdateField(mino, mino.minoType);
 			}
 		}
 		

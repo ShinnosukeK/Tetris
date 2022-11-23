@@ -30,21 +30,21 @@ void InitField() {
 }
 
 
-void UpdateField(Mino* mino, BlockType type) {
+void UpdateField(const Mino& mino, BlockType type) {
 	for (int i = 0; i < 4; i++) {
 		//受け取ったミノのワールド座標の位置のフィールドを，受け取った色にする
-		field[mino->worldPos[i].x][mino->worldPos[i].y] = int(type);
+		field[mino.worldPos[i].x][mino.worldPos[i].y] = int(type);
 	}
 };
 
-void UpdateFieldOnMove(Mino* mino, Mino* tmpMino) {
+void UpdateFieldOnMove(const Mino& mino, const Mino& tmpMino) {
 
 	//先に移動前のミノに当たるフィールドを背景に更新
 	UpdateField(tmpMino, BlockType::Background);
 
 	//後に移動後のミノに当たるフィールドをそのミノの色に更新。
 	//これは逆にするとミノ部分が背景に塗られるので注意。
-	UpdateField(mino, mino->minoType);
+	UpdateField(mino, mino.minoType);
 }
 
 void UpdateFieldOnDelete(bool* deleteFlag) {
