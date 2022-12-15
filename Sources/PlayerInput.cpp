@@ -68,8 +68,8 @@ void PlayerInput(Mino* mino, bool* isGrounded, const bool& isAnim) {
 		keyInputFrames[KEY_INPUT_K] -= 100;//“K“–‚Éˆø‚­‚±‚Æ‚ÅC’·‰Ÿ‚µ‚µ‚Ä‰ñ“]‚µ‚È‚¢‚æ‚¤‚É‚·‚é
 
 		//”½Œv‰ñ‚è‚É‰ñ‚¹‚é‚È‚ç‰ñ‚·
-		if (CanRota(*mino, RotaDir::CounterClockwise)) {
-			RotaMino(mino, RotaDir::CounterClockwise);
+		if (CanRota(*mino, RotaDir::Clockwise)) {
+			RotaMino(mino, RotaDir::Clockwise);
 		}
 		
 	}

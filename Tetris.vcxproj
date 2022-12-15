@@ -24,6 +24,7 @@
     <ClInclude Include="Headers\Mino.hpp" />
     <ClInclude Include="Headers\Movement.hpp" />
     <ClInclude Include="Headers\Picture.hpp" />
+    <ClInclude Include="Headers\Player.hpp" />
     <ClInclude Include="Headers\PlayerInput.hpp" />
     <ClInclude Include="Headers\System.hpp" />
     <ClInclude Include="Headers\Time.hpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="Sources\Mino.cpp" />
     <ClCompile Include="Sources\Movement.cpp" />
     <ClCompile Include="Sources\Picture.cpp" />
+    <ClCompile Include="Sources\Player.cpp" />
     <ClCompile Include="Sources\PlayerInput.cpp" />
     <ClCompile Include="Sources\System.cpp" />
     <ClCompile Include="Sources\Time.cpp" />
